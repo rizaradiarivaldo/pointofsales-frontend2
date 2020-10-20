@@ -3,25 +3,42 @@
   <div>
      <div class="collapse" id="collapseExample">
       <div class="card card-body">
-       <form v-on:submit.prevent="">
-         <input type="text" name="search"  @keyup="sortingProducts(search)" v-model="search" id="search" class="form-control" placeholder="Search ...">
-       </form>
+        <form @submit.prevent="searching(search)">
+          <div class="row">
+            <div class="col-lg-10 col-10">
+              <input type="text" name="search" v-model="search" id="search" class="form-control" placeholder="Search ...">
+            </div>
+            <div class="col-lg-2 col-2">
+              <button type="submit" class="btn"><img src="../assets/img/magnifying-glass.png" alt /></button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>
   <div>
+    <!-- <div class="cont-pagination" @click="pagi()">
+      <b-pagination
+          v-model="currentPage"
+          :total-rows="rows"
+          :per-page="perPage"
+          aria-controls="my-table"
+          size="md"
+          page-class=""
+      ></b-pagination>
+    </div> -->
     <div class="dropdown dropleft text-right mt-3">
-  <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-     Sort by
-  </button>
-  <div class="dropdown-menu">
-      <a class="dropdown-item" @click="sortLates()" style="cursor: pointer;">Lates Products</a>
-      <a class="dropdown-item" @click="sortProductNameA()" style="cursor: pointer;">Product Name A-Z</a>
-      <a class="dropdown-item" @click="sortProductNameZ()" style="cursor: pointer;">Product Name Z-A</a>
-      <a class="dropdown-item" @click="sortPriceA()" style="cursor: pointer;">Price A-Z</a>
-      <a class="dropdown-item" @click="sortPriceZ()" style="cursor: pointer;">Price Z-A</a>
-  </div>
-</div>
+      <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Sort by
+      </button>
+      <div class="dropdown-menu">
+          <a class="dropdown-item" @click="sort('id_product','desc')" style="cursor: pointer;">Lates Products</a>
+          <a class="dropdown-item" @click="sort('productname','asc')" style="cursor: pointer;">Product Name A-Z</a>
+          <a class="dropdown-item" @click="sort('productname','desc')" style="cursor: pointer;">Product Name Z-A</a>
+          <a class="dropdown-item" @click="sort('price','asc')" style="cursor: pointer;">Price A-Z</a>
+          <a class="dropdown-item" @click="sort('price','desc')" style="cursor: pointer;">Price Z-A</a>
+      </div>
+    </div>
   </div>
   <div class="main-card">
     <div v-if="Products.isLoading">
@@ -76,7 +93,14 @@
               </div>
             </div>
           </div>
-        </div>
+  </div>
+
+  <div>
+    <button class="btn btn-primary" @click="paginationBack()">Back</button>
+    <button class="ml-2 btn btn-primary">{{page}}</button>
+    <button class="ml-2 btn btn-primary" @click="paginationNext()">Next</button>
+
+  </div>
       </div>
 </template>
 
@@ -90,7 +114,8 @@ export default {
   data () {
     return {
       search: '',
-      url: process.env.VUE_APP_URL
+      url: process.env.VUE_APP_URL,
+      page: 1
     }
   },
   // directives: {
@@ -104,23 +129,85 @@ export default {
   computed: {
     ...mapGetters({
       Products: 'products/getAllProducts'
-    })
+    }),
+    pagination () {
+      return this.page
+    }
   },
   methods: {
     ...mapActions({
-      sortLates: 'products/sortLates',
-      getAllProducts: 'products/getAllProducts',
-      sortingProducts: 'products/SortingData',
-      sortProductNameA: 'products/sortProductNameA',
-      sortProductNameZ: 'products/sortProductNameZ',
-      sortPriceA: 'products/sortPriceA',
-      sortPriceZ: 'products/sortPriceZ',
-      deleteData: 'products/deleteData'
-    })
+      getAllProducts: 'products/getAllProducts'
+      // sortLates: 'products/sortLates',
+      // getAllProducts: 'products/getAllProducts',
+      // sortingProducts: 'products/SortingData',
+      // sortProductNameA: 'products/sortProductNameA',
+      // sortProductNameZ: 'products/sortProductNameZ',
+      // sortPriceA: 'products/sortPriceA',
+      // sortPriceZ: 'products/sortPriceZ',
+      // deleteData: 'products/deleteData'
+    }),
+    searching (search) {
+      // this.sortingProducts(this.search)
+      this.$router.push({
+        query: {
+          search
+        }
+      })
+      const fd = {
+        name: search
+      }
+      this.getAllProducts(fd)
+      this.search = ''
+    },
+    sort (sortby, sorttype) {
+      this.$router.push({
+        query: {
+          sortby,
+          sorttype
+        }
+      })
+      const fd = {
+        sortby: sortby,
+        sorttype: sorttype
+      }
+      this.getAllProducts(fd)
+    },
+    paginationNext () {
+      if (this.page >= this.Products.meta.totalPage) {
+        alert('Last Page')
+      } else {
+        this.page += 1
+        const fd = {
+          page: this.page
+        }
+        this.$router.push({
+          query: {
+            page: this.page
+          }
+        })
+        this.getAllProducts(fd)
+      }
+    },
+    paginationBack () {
+      if (this.page <= 1) {
+        alert('First Page')
+      } else {
+        this.page -= 1
+        const fd = {
+          page: this.page
+        }
+        this.$router.push({
+          query: {
+            page: this.page
+          }
+        })
+        this.getAllProducts(fd)
+      }
+    }
   },
 
   mounted () {
-    this.getAllProducts()
+    this.getAllProducts('')
   }
 }
 </script>

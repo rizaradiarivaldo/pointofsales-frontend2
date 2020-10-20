@@ -183,7 +183,7 @@ export default {
     },
     updateData (id, index) {
       this.updateId = id
-      console.log(this.Products.data[index].productname)
+      // console.log(this.Products.data[index].productname)
       this.form.productname = this.Products.data[index].productname
       this.form.price = this.Products.data[index].price
       this.form.image = this.Products.data[index].image

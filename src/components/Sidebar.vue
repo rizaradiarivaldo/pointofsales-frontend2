@@ -48,8 +48,6 @@ export default {
     }),
     onLogout () {
       this.actionLogout().then(() => {
-        // this.$route.push('/login')
-        alert('Berhasil Logout')
         window.location = '/login'
       })
     }

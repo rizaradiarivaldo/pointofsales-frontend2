@@ -15,7 +15,7 @@
                 <div class="form-group">
                   <label for="email" class="font-weight-bold mt-3">Email</label>
                   <input
-                    type="email"
+                    type="text"
                     class="form-control shadow-input"
                     id="email"
                     placeholder="Email" v-model="form.email"
@@ -28,7 +28,7 @@
                     type="password"
                     class="form-control shadow-input"
                     id="password"
-                    placeholder="Password" v-model="form.password "
+                    placeholder="Password" v-model="form.password"
                   />
                 </div>
 
@@ -70,14 +70,27 @@ export default {
 
   methods: {
     onLogin () {
-      // console.log(this.form)
+      // if (this.form.email === null || this.form.email === undefined || this.form.email === '' ||
+      // this.form.password === null || this.form.password === undefined || this.form.password === '') {
+      //   alert('Email or password is required')
+      // } else if (this.form.email.indexOf('@') < 1 || this.form.email.lastIndexOf('.')) {
+      //   alert('Email is wrong!')
+      // } else if (this.form.password.length < 8) {
+      //   alert('The password cannot be less than 8 characters')
+      // } else {
       this.actionLogin(this.form).then((response) => {
-        alert(response)
+        // alert(response)
         window.location = '/'
-      // eslint-disable-next-line handle-callback-err
+        // eslint-disable-next-line handle-callback-err
       }).catch((err) => {
-        alert(err)
+        // alert(err)
+        if (err === 'Gagal Login') {
+          alert('Email or password is wrong!')
+        } else {
+          alert(err)
+        }
       })
+      // }
     },
     ...mapActions({
       actionLogin: 'auth/login'
