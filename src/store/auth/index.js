@@ -24,8 +24,7 @@ const actions = {
         .then((response) => {
           localStorage.setItem('token', response.data.data.token)
           localStorage.setItem('refreshtoken', response.data.data.refreshtoken)
-          resolve(response.data.message)
-          console.log(response.data)
+          resolve(response.data)
         }).catch(() => {
           // eslint-disable-next-line prefer-promise-reject-errors
           reject('Gagal Login')
@@ -36,8 +35,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       axios.post(`${url}/users/register`, payload)
         .then((response) => {
-          resolve(response.data.message)
-          console.log(response.data)
+          resolve(response.data)
         }).catch(() => {
           // eslint-disable-next-line prefer-promise-reject-errors
           reject('Gagal Register')

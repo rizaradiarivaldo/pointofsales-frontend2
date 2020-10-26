@@ -136,18 +136,10 @@ export default {
   },
   methods: {
     ...mapActions({
-      getAllProducts: 'products/getAllProducts'
-      // sortLates: 'products/sortLates',
-      // getAllProducts: 'products/getAllProducts',
-      // sortingProducts: 'products/SortingData',
-      // sortProductNameA: 'products/sortProductNameA',
-      // sortProductNameZ: 'products/sortProductNameZ',
-      // sortPriceA: 'products/sortPriceA',
-      // sortPriceZ: 'products/sortPriceZ',
-      // deleteData: 'products/deleteData'
+      getAllProducts: 'products/getAllProducts',
+      deleteData: 'products/deleteData'
     }),
     searching (search) {
-      // this.sortingProducts(this.search)
       this.$router.push({
         query: {
           search

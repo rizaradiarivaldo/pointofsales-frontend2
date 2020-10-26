@@ -4,11 +4,11 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="row">
-            <div class="col-lg-7">
+            <div class="col-lg-7 img-hide">
               <img src="../assets/img/home.jpg" class="img-fluid img" alt />
             </div>
 
-            <div class="col-lg-5 form-register">
+            <div class="col-lg-5 col-12 form-register">
               <form class="form-add" v-on:submit.prevent="onRegister()">
                 <h5 class="modal-title mb-4 font-weight-bold">Form Register</h5>
                 <hr />
@@ -19,6 +19,7 @@
                     class="form-control shadow-input"
                     id="email"
                     placeholder="Email" v-model="form.email"
+                    required
                   />
                 </div>
                 <div class="form-group">
@@ -27,7 +28,8 @@
                     type="password"
                     class="form-control shadow-input"
                     id="password"
-                    placeholder="Password" v-model="form.password "
+                    placeholder="Password" v-model="form.password"
+                    required
                   />
                 </div>
 
@@ -68,13 +70,23 @@ export default {
 
   methods: {
     onRegister () {
-      this.actionRegister(this.form)
-        .then((response) => {
-          alert('Check your email for activation...')
-          // window.location = '/'
-        }).catch((err) => {
-          alert(err)
-        })
+      if (this.form.password.length < 8) {
+        this.$swal('Login Failed', 'Password must be 8 characters or more', 'warning')
+      } else {
+        this.actionRegister(this.form)
+          .then((response) => {
+            if (response.message === `Error: Duplicate entry '${this.form.email}' for key 'users.email'`) {
+              this.$swal('Register Failed', 'Email already exists', 'error')
+            } else if (response.message === 'Check your email, please verification') {
+              this.$swal('Register', 'Check your email for activation', 'success')
+              window.location = '/login'
+            } else {
+              this.$swal('Register', response.message, 'success')
+            }
+          }).catch((err) => {
+            console.log(err)
+          })
+      }
     },
     ...mapActions({
       actionRegister: 'auth/register'

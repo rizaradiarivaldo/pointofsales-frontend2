@@ -4,11 +4,11 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="row">
-            <div class="col-lg-7">
+            <div class="col-lg-7 img-hide">
               <img src="../assets/img/home.jpg" class="img-fluid img" alt />
             </div>
 
-            <div class="col-lg-5 form-login">
+            <div class="col-lg-5 col-12 form-login">
               <form class="form-add" v-on:submit.prevent="onLogin()">
                 <h5 class="modal-title mb-4 font-weight-bold">Form Login</h5>
                 <hr />
@@ -70,24 +70,20 @@ export default {
 
   methods: {
     onLogin () {
-      // if (this.form.email === null || this.form.email === undefined || this.form.email === '' ||
-      // this.form.password === null || this.form.password === undefined || this.form.password === '') {
-      //   alert('Email or password is required')
-      // } else if (this.form.email.indexOf('@') < 1 || this.form.email.lastIndexOf('.')) {
-      //   alert('Email is wrong!')
-      // } else if (this.form.password.length < 8) {
-      //   alert('The password cannot be less than 8 characters')
-      // } else {
       this.actionLogin(this.form).then((response) => {
-        // alert(response)
-        window.location = '/'
-        // eslint-disable-next-line handle-callback-err
+        if (response.message === 'Activation needed!') {
+          this.$swal('Login', 'Activation needed!', 'warning')
+        } else if (response.message === 'Email not registered, Register please!') {
+          this.$swal('Login', response.message, 'warning')
+        } else if (response.message === 'Token success') {
+          window.location = '/'
+        }
       }).catch((err) => {
         // alert(err)
         if (err === 'Gagal Login') {
-          alert('Email or password is wrong!')
+          this.$swal('Login Failed', 'Email or password is wrong!', 'error')
         } else {
-          alert(err)
+          this.$swal('Login Failed', err, 'error')
         }
       })
       // }
@@ -141,5 +137,12 @@ export default {
     background-color: rgba(235, 229, 229, 0.774);
   }
 }
+
+@media (max-width: 576px) {
+  .img-hide {
+    display: none;
+  }
+}
+
 /* style="box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25)" */
 </style>

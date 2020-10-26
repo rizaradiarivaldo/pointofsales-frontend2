@@ -5,9 +5,12 @@ import store from './store'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import axios from 'axios'
 import { url } from '../src/helpers/env'
+import VueSweetalert2 from 'vue-sweetalert2'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+Vue.use(VueSweetalert2)
 
 axios.interceptors.response.use(function (response) {
   return response
