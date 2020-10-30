@@ -14,9 +14,11 @@
           </div>
           <br />
           <br />
+          <div v-for="(item, index) in newcart" :key="index">
           <div class="row">
             <div class="col-6 mb-3 text-left">Coffe Latte 1x</div>
             <div class="col-6 text-right">Rp. 15.000</div>
+          </div>
           </div>
           <div class="row">
             <div class="col-6 mb-3 text-left">Black Forest 1x</div>
@@ -50,3 +52,9 @@
   </div>
   </div>
 </template>
+
+<script>
+export default {
+  props: ['newcart']
+}
+</script>

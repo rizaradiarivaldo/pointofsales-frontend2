@@ -5,8 +5,6 @@ import Home from '../views/Home.vue'
 import History from '../views/History.vue'
 import Register from '../views/Register.vue'
 import store from '../store'
-import Latihanvuex from '../views/Latihanvuex.vue'
-
 Vue.use(VueRouter)
 
 const routes = [
@@ -35,21 +33,7 @@ const routes = [
     meta: {
       requiresAuth: true
     }
-  },
-  {
-    path: '/latihanvuex',
-    name: 'Latihanvuex',
-    component: Latihanvuex
   }
-
-  // {
-  // path: '/about',
-  // name: 'About',
-  // route level code-splitting
-  // this generates a separate chunk (about.[hash].js) for this route
-  // which is lazy-loaded when the route is visited.
-  // component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  // }
 ]
 
 const router = new VueRouter({

@@ -10,8 +10,6 @@ import VueSweetalert2 from 'vue-sweetalert2'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-Vue.use(VueSweetalert2)
-
 axios.interceptors.response.use(function (response) {
   return response
 }, function (error) {
@@ -31,6 +29,8 @@ axios.interceptors.response.use(function (response) {
     })
   }
 })
+
+Vue.use(VueSweetalert2)
 
 axios.defaults.headers = {
   token: localStorage.getItem('token')

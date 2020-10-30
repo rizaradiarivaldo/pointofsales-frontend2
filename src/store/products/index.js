@@ -42,7 +42,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       axios.get(`${url}/product/getall?name=${fd.name}&sort=${fd.sortby}&typesort=${fd.sorttype}&page=${fd.page}`)
         .then((response) => {
-          resolve()
+          resolve(response.data)
           context.commit('SET_ALL_DATA_PRODUCT', response.data.data)
           context.commit('SET_META', response.data.meta)
         }).catch((err) => {
@@ -84,8 +84,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       axios.delete(`${url}/product/delete/${payload}`)
         .then((response) => {
-          resolve()
-          window.location = '/'
+          resolve(response.data)
         }).catch((err) => {
           console.log(err)
         })

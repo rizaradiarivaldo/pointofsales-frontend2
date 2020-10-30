@@ -17,16 +17,6 @@
     </div>
   </div>
   <div>
-    <!-- <div class="cont-pagination" @click="pagi()">
-      <b-pagination
-          v-model="currentPage"
-          :total-rows="rows"
-          :per-page="perPage"
-          aria-controls="my-table"
-          size="md"
-          page-class=""
-      ></b-pagination>
-    </div> -->
     <div class="dropdown dropleft text-right mt-3">
       <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Sort by
@@ -41,10 +31,10 @@
     </div>
   </div>
   <div class="main-card">
-    <div v-if="Products.isLoading">
-      <div class="row" style="height: 45vw">
+    <div v-if="Products.isLoading" class="loading">
+      <div class="row" style="height: 45vw; display: flex; align-items: center;">
         <div class="col-lg-12">
-          <b-icon icon="arrow-counterclockwise" animation="spin-reverse-pulse" font-scale="10"></b-icon>
+          <b-icon icon="arrow-counterclockwise" animation="spin-reverse-pulse" font-scale="8"></b-icon>
         </div>
       </div>
     </div>
@@ -84,7 +74,7 @@
                           </template>
                            <b-dropdown-item data-toggle="modal" @click="$emit('addtocart',item.id_product,index)" style="cursor: pointer;">Add To Cart</b-dropdown-item>
                           <b-dropdown-item data-toggle="modal" data-target="#edit-modal" @click="$emit('update',item.id_product,index)" style="cursor: pointer;">Edit</b-dropdown-item>
-                          <b-dropdown-item @click="deleteData(item.id_product)" style="cursor: pointer;">Delete</b-dropdown-item>
+                          <b-dropdown-item @click="del(item.id_product,index)" style="cursor: pointer;">Delete</b-dropdown-item>
                         </b-dropdown>
                       </div>
                     </div>
@@ -195,11 +185,44 @@ export default {
         })
         this.getAllProducts(fd)
       }
+    },
+    del (id, index) {
+      // this.deleteData(id)
+      // alert(index)
+      this.$swal({
+        title: 'Are you sure?',
+        text: 'You can\'t revert your action',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes Delete it!',
+        cancelButtonText: 'No, Keep it!',
+        showCloseButton: true,
+        showLoaderOnConfirm: true
+      }).then((result) => {
+        if (result.value) {
+          this.deleteData(id)
+            .then((result) => {
+              this.$swal('Deleted', 'You successfully deleted this file', 'success')
+              this.Products.data.splice(index, 1)
+            })
+        } else {
+          this.$swal('Cancelled', '', 'info')
+        }
+      })
     }
   },
 
   mounted () {
     this.getAllProducts('')
+      .then((response) => {
+        if (response.code === 499 || response.code === '499') {
+          this.$router.push({
+            path: '/login'
+          })
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
   }
 }
 </script>
@@ -207,5 +230,10 @@ export default {
 <style scoped>
 .main-card {
   margin-top: 20px;
+}
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

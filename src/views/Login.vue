@@ -75,6 +75,8 @@ export default {
           this.$swal('Login', 'Activation needed!', 'warning')
         } else if (response.message === 'Email not registered, Register please!') {
           this.$swal('Login', response.message, 'warning')
+        } else if (response.message === 'Password wrong, check again!') {
+          this.$swal('Login', response.message, 'warning')
         } else if (response.message === 'Token success') {
           window.location = '/'
         }

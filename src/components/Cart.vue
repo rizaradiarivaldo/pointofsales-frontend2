@@ -20,14 +20,17 @@
           <div v-for="(item, index) in newcart" :key="index">
             <div class="row">
               <div class="col-md-4 col-4 text-center">
-                <img :src="`${url}/${item.image}`" class="img-fluid" />
+                <img :src="`${url}/${item.image}`" class="img-fluid p-1" />
               </div>
               <div class="col-md-8 col-8">
-                <div class="row">
-                  <div class="col-md-12 col-12 text-left">
+                <!-- <div class="row">
+                  <div class="col-md-8 col-8 text-left">
                     <p>
                       <strong>{{item.productname}}</strong>
                     </p>
+                  </div>
+                  <div class="col-md-4 col-4 text-left">
+                    <b-icon @click="$emit('del', index)" style="cursor: pointer;" icon="trash" aria-hidden="true"></b-icon>
                   </div>
                   <div class="col-md-6 col-6">
                     <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
@@ -46,10 +49,43 @@
                   </div>
                   <div class="col-md-6 col-6">
                     <p>
-                      <strong>Rp. {{item.price}}</strong>
+                      <strong>Rp. {{item.price*item.qty}}</strong>
                     </p>
                   </div>
-                </div>
+                </div> -->
+                <div class="row">
+                  <div class="col-md-8 col-8 text-left">
+                    <p>
+                      <strong>{{item.productname}}</strong>
+                    </p>
+                  </div>
+                  <div class="col-md-4 col-4 text-right">
+                    <b-icon @click="$emit('del', index)" style="cursor: pointer;" icon="trash" aria-hidden="true"></b-icon>
+                  </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-5 col-5 text-left">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                      <button
+                        type="button"
+                        @click="$emit('minus', index)"
+                        class="btn btn-outline-success"
+                      >-</button>
+                      <button type="button" disabled class="btn btn-outline-success">{{item.qty}}</button>
+                      <button
+                        type="button"
+                        @click="$emit('plus', index)"
+                        class="btn btn-outline-success"
+                      >+</button>
+                    </div>
+                  </div>
+                  <div class="col-md-7 col-7 text-right">
+                    <p>
+                      <strong>Rp. {{item.price*item.qty}}</strong>
+                    </p>
+                  </div>
+                  </div>
+
               </div>
             </div>
           </div>
@@ -57,13 +93,13 @@
       </div>
 
       <div class="row">
-        <div class="col-md-12" style="margin-top: 140px">
+        <div class="col-md-12 col-12" style="margin-top: 140px">
           <div class="row">
-            <div class="col-md-6 text-left">
+            <div class="col-md-3 col-3 text-left">
               <strong>Total :</strong>
             </div>
-            <div class="col-md-6 text-right">
-              <strong>Rp. 105.000*</strong>
+            <div class="col-md-9 col-9 text-right">
+              <strong>Rp. {{totalPrice()}}*</strong>
             </div>
           </div>
         </div>
@@ -98,6 +134,15 @@ export default {
   data () {
     return {
       url: process.env.VUE_APP_URL
+    }
+  },
+  methods: {
+    totalPrice () {
+      let total = 0
+      for (let i = 0; i < this.newcart.length; i++) {
+        total += this.newcart[i].price * this.newcart[i].qty
+      }
+      return total
     }
   }
 }

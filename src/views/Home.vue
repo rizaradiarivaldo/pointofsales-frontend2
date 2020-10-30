@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <ModalCheckout />
+    <ModalCheckout  :newcart="newCart" />
     <ModalAdd />
     <!-- <ModalEdit :updateid="updateId" :updateindex="updateIndex"/> -->
     <div>
@@ -77,7 +77,7 @@
                 </div>
                 <div class="row">
                   <div class="col-lg-1 col-md-12 col-12 sidebar">
-                    <Sidebar :newcart="newCart"/>
+                    <Sidebar :newcart="newCart" @plus="plus"  @minus="minus" @del="del"/>
                   </div>
                   <div class="col-lg-11 content">
                     <Card @update="updateData" @addtocart="addToCart"/>
@@ -85,7 +85,7 @@
                 </div>
               </div>
               <div class="col-lg-3 main-cart">
-                <Cart :newcart="newCart" @plus="plus"  @minus="minus"/>
+                <Cart :newcart="newCart" @plus="plus"  @minus="minus" @del="del"/>
 
               </div>
             </div>
@@ -129,7 +129,9 @@ export default {
       updateIndex: null,
       idProduct: null,
       indexProduct: null,
-      newCart: []
+      newCart: [],
+      priceCart: [],
+      priceSum: null
     }
   },
   methods: {
@@ -141,6 +143,11 @@ export default {
         const data = this.Products.data.filter(e => e.id_product === id)
         data[0].qty = 1
         this.newCart = [...this.newCart, data[0]]
+
+        this.priceCart = [
+          ...this.priceCart, data[0].price
+        ]
+        this.priceSum = this.priceCart
       } else {
         const oldData = this.newCart.map((e) => {
           if (e.id_product === id) {
@@ -152,7 +159,6 @@ export default {
       }
     },
     minus (index) {
-      console.log(index)
       const cart1 = this.newCart[index].id_product
       const datafilter = this.newCart.filter((e) => {
         if (e.id_product === cart1) {
@@ -167,7 +173,6 @@ export default {
       // console.log(datafilter)
     },
     plus (index) {
-      console.log(index)
       const cart1 = this.newCart[index].id_product
       const datafilter = this.newCart.filter((e) => {
         if (e.id_product === cart1) {
@@ -178,6 +183,10 @@ export default {
       this.newCart = datafilter
       // console.log(datafilter)
     },
+    del (index) {
+      this.newCart.splice(index, 1)
+    },
+
     process (event) {
       this.form.image = event.target.files[0]
     },

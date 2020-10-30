@@ -8,17 +8,14 @@
       <img src="../assets/img/fork.png" alt />
     </router-link>
 
-    <router-link to="/history">
-      <img src="../assets/img/clipboard.png" alt />
-    </router-link>
-
-    <router-link to="" data-toggle="modal" data-target="#add-modal">
+    <router-link to="/" data-toggle="modal" data-target="#add-modal">
       <img src="../assets/img/add.png" alt />
     </router-link>
 
-    <!-- <router-link  @click="onLogout()">
-      <b-icon icon="door-closed" class="border rounded text-center logout" scale="3" ></b-icon>
-    </router-link> -->
+    <router-link to="/">
+      <img src="../assets/img/clipboard.png" alt />
+    </router-link>
+
     <a style="cursor: pointer" @click="onLogout()">
     <b-icon icon="door-closed" class="border rounded text-center logout" scale="3" ></b-icon>
     </a>
